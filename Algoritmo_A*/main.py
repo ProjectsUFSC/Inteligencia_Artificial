@@ -1,9 +1,9 @@
-import numpy as np
-
 # Algoritmo A* para resolver o quebra-cabeça de 8 peças
 # Autor: Augusto Daleffe
 # Data: 17/09/2024
 # Disciplina: Inteligência Artificial - UFSC
+
+import numpy as np
 
 initial_state = np.array([[1, 2, 4], [7, 5, 3], [8, 0, 6]])
 
