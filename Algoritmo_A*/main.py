@@ -5,9 +5,17 @@
 
 import numpy as np
 
-initial_state = np.array([[1, 2, 4], [7, 5, 3], [8, 0, 6]])
+initial_state = np.array([
+    [1, 2, 4], 
+    [7, 5, 3], 
+    [8, 0, 6]
+    ])
 
-final_state = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
+final_state = np.array([
+    [1, 2, 3],
+    [4, 5, 6], 
+    [7, 8, 0]
+    ])
 
 def h(state):
     return np.sum(state != final_state) - 1  # -1 para desconsiderar o zero
@@ -47,7 +55,7 @@ def A_star(initial_state):
     steps = 0
     while openeds:
         openeds = sorted(openeds, key=lambda x: x[0]) 
-        f_state, state, moves, path = openeds.pop(0) 
+        cost, state, moves, path = openeds.pop(0) 
         if np.array_equal(state, final_state): 
             return path + [state], steps
         
