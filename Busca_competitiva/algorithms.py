@@ -1,8 +1,8 @@
 import random
 
 def random_ai_move(game):
-    empty_cells = [(r, c) for r in range(3) for c in range(3) if game.board[r][c] == " "]
-    return random.choice(empty_cells)
+    choice = [(r, c) for r in range(3) for c in range(3) if game.board[r][c] == " "]
+    return random.choice(choice)
 
 # Função de avaliação para Minimax
 def evaluate(game):
