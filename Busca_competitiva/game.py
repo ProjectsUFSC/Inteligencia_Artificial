@@ -1,4 +1,4 @@
-class TicTacToe:
+class Game:
     def __init__(self):
         self.board = [[" " for _ in range(3)] for _ in range(3)]
     
@@ -16,7 +16,6 @@ class TicTacToe:
         return False
 
     def check_winner(self, player):
-        # Checa linhas, colunas e diagonais
         for row in range(3):
             if all([self.board[row][col] == player for col in range(3)]):
                 return True
