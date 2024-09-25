@@ -92,15 +92,4 @@ def alphabeta(game, depth, alpha, beta, is_maximizing):
 def alphabeta_ai_move(game):
     best_score = -float("inf")
     best_move = None
-    alpha = -float("inf")
-    beta = float("inf")
-    for r in range(3):
-        for c in range(3):
-            if game.board[r][c] == " ":
-                game.board[r][c] = "O"
-                score = alphabeta(game, 0, alpha, beta, False)
-                game.board[r][c] = " "
-                if score > best_score:
-                    best_score = score
-                    best_move = (r, c)
-    return best_move
+    alpha = -float

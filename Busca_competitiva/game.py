@@ -3,10 +3,12 @@ class TicTacToe:
         self.board = [[" " for _ in range(3)] for _ in range(3)]
     
     def print_board(self):
-        for row in self.board:
-            print("|".join(row))
-            print("-" * 5)
-    
+        positions = [str(i) if self.board[i // 3][i % 3] == " " else self.board[i // 3][i % 3] for i in range(9)]
+        for i in range(3):
+            print(f"{positions[i * 3]} | {positions[i * 3 + 1]} | {positions[i * 3 + 2]}")
+            if i < 2:
+                print("--+---+--")
+
     def make_move(self, row, col, player):
         if self.board[row][col] == " ":
             self.board[row][col] = player
