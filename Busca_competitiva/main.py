@@ -63,16 +63,21 @@ def main():
                 game.print_board()
                 break
 
+            # Verifica se o jogo acabou antes do movimento da IA
+            if game.is_over():
+                break
+
             # Movimento da IA
             ai_row, ai_col = ai_move(game)
-            game.make_move(ai_row, ai_col, "O")
-            print(f"IA jogou na posição {ai_row * 3 + ai_col}")
+            if ai_row is not None and ai_col is not None:  # Verifica se a IA encontrou um movimento
+                game.make_move(ai_row, ai_col, "O")
+                print(f"IA jogou na posição {ai_row * 3 + ai_col}")
 
-            # Verifica se a IA venceu
-            if game.check_winner("O"):
-                print("A IA venceu!")
-                game.print_board()
-                break
+                # Verifica se a IA venceu
+                if game.check_winner("O"):
+                    print("A IA venceu!")
+                    game.print_board()
+                    break
 
         if not game.check_winner("X") and not game.check_winner("O"):
             print("Empate!")
