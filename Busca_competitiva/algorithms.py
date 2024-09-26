@@ -1,60 +1,97 @@
 import random
 
-def random_ai_move(game):
-    empty_positions = [(row, col) for row in range(3) for col in range(3) if game.board[row][col] == " "]
-    return random.choice(empty_positions) if empty_positions else (None, None)
+def movimento_aleatorio(jogo):
+    while True:
+        posicao = random.randint(0, 8) 
+        if jogo.tabuleiro[posicao] == " ":
+            return posicao // 3, posicao % 3 
 
-def minimax_ai_move(game):
-    # Implementação do Minimax (você pode adaptar conforme sua lógica)
-    pass  # Adicione sua lógica aqui
+def minimax(jogo, jogador):
+    if jogo.verificar_vencedor("O"):
+        return 1  # Vencedor O
+    elif jogo.verificar_vencedor("X"):
+        return -1  # Vencedor X
+    elif jogo.jogo_terminado():
+        return 0  # Empate
 
-def alphabeta_ai_move(game):
-    def alphabeta(node, depth, alpha, beta, maximizing_player):
-        if game.check_winner("X"):
-            return -1  # jogador ganhou
-        elif game.check_winner("O"):
-            return 1  # IA ganhou
-        elif game.is_over():
-            return 0  # empate
+    melhor_valor = -float('inf') if jogador == "O" else float('inf')
 
-        if maximizing_player:
-            max_eval = -float('inf')
-            for row in range(3):
-                for col in range(3):
-                    if node[row][col] == " ":
-                        node[row][col] = "O"  # IA joga
-                        eval = alphabeta(node, depth + 1, alpha, beta, False)
-                        node[row][col] = " "  # desfeita movimento
-                        max_eval = max(max_eval, eval)
-                        alpha = max(alpha, eval)
-                        if beta <= alpha:
-                            break
-            return max_eval
-        else:
-            min_eval = float('inf')
-            for row in range(3):
-                for col in range(3):
-                    if node[row][col] == " ":
-                        node[row][col] = "X"  # jogador joga
-                        eval = alphabeta(node, depth + 1, alpha, beta, True)
-                        node[row][col] = " "  # desfeita movimento
-                        min_eval = min(min_eval, eval)
-                        beta = min(beta, eval)
-                        if beta <= alpha:
-                            break
-            return min_eval
+    for i in range(9):
+        if jogo.tabuleiro[i] == " ":
+            jogo.fazer_jogada(i, jogador)
+            valor = minimax(jogo, "X" if jogador == "O" else "O")
+            jogo.tabuleiro[i] = " "
 
-    best_move = None
-    best_value = -float('inf')
-    for row in range(3):
-        for col in range(3):
-            if game.board[row][col] == " ":
-                game.board[row][col] = "O"  # IA joga
-                move_value = alphabeta(game.board, 0, -float('inf'), float('inf'), False)
-                game.board[row][col] = " "  # desfeita movimento
-                if move_value > best_value:
-                    best_value = move_value
-                    best_move = (row, col)
+            if jogador == "O":
+                if valor > melhor_valor:
+                    melhor_valor = valor
+            else:
+                if valor < melhor_valor:
+                    melhor_valor = valor
 
-    return best_move if best_move else (None, None)
+    return melhor_valor
 
+def movimento_minimax(jogo):
+    melhor_valor = -float('inf')
+    melhor_posicao = None
+
+    for i in range(9):
+        if jogo.tabuleiro[i] == " ":
+            jogo.fazer_jogada(i, "O")
+            valor = minimax(jogo, "X")
+            jogo.tabuleiro[i] = " "
+            if valor > melhor_valor:
+                melhor_valor = valor
+                melhor_posicao = i
+
+    print(f"A IA jogou na posição {melhor_posicao} (Minimax)")
+    return melhor_posicao // 3, melhor_posicao % 3
+
+def alphabeta(jogo, profundidade, alpha, beta, jogador):
+    if jogo.verificar_vencedor("O"):
+        return 1  # Vencedor O
+    elif jogo.verificar_vencedor("X"):
+        return -1  # Vencedor X
+    elif jogo.jogo_terminado():
+        return 0  # Empate
+
+    if jogador == "O":
+        melhor_valor = -float('inf')
+        for i in range(9):
+            if jogo.tabuleiro[i] == " ":
+                jogo.fazer_jogada(i, jogador)
+                valor = alphabeta(jogo, profundidade + 1, alpha, beta, "X")
+                jogo.tabuleiro[i] = " "
+                melhor_valor = max(melhor_valor, valor)
+                alpha = max(alpha, valor)
+                if beta <= alpha:
+                    break
+        return melhor_valor
+    else:
+        melhor_valor = float('inf')
+        for i in range(9):
+            if jogo.tabuleiro[i] == " ":
+                jogo.fazer_jogada(i, jogador)
+                valor = alphabeta(jogo, profundidade + 1, alpha, beta, "O")
+                jogo.tabuleiro[i] = " "
+                melhor_valor = min(melhor_valor, valor)
+                beta = min(beta, valor)
+                if beta <= alpha:
+                    break
+        return melhor_valor
+
+def movimento_alphabeta(jogo):
+    melhor_valor = -float('inf')
+    melhor_posicao = None
+
+    for i in range(9):
+        if jogo.tabuleiro[i] == " ":
+            jogo.fazer_jogada(i, "O")
+            valor = alphabeta(jogo, 0, -float('inf'), float('inf'), "X")
+            jogo.tabuleiro[i] = " "
+            if valor > melhor_valor:
+                melhor_valor = valor
+                melhor_posicao = i
+
+    print(f"A IA jogou na posição {melhor_posicao} (Poda Alfa-Beta)")  # Impressão do movimento da IA
+    return melhor_posicao // 3, melhor_posicao % 3
