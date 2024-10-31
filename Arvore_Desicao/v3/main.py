@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 
-data = pd.read_csv("./Credit Score Classification Dataset.csv")
+data = pd.read_csv("./student_sleep_patterns.csv")
 
 # print(data.head(10))
 # print('\n\n\n\n\n\n\n\n')
@@ -15,20 +15,18 @@ data = pd.read_csv("./Credit Score Classification Dataset.csv")
 lb_encoder = LabelEncoder() 
 
 data['Gender'] = lb_encoder.fit_transform(data['Gender'])
-data['Education'] = lb_encoder.fit_transform(data['Education'])
-data['Marital Status'] = lb_encoder.fit_transform(data['Marital Status'])
-data['Home Ownership'] = lb_encoder.fit_transform(data['Home Ownership'])
-data['Credit Score'] = lb_encoder.fit_transform(data['Credit Score'])
+data['University_Year'] = lb_encoder.fit_transform(data['University_Year'])
+
 
 
 # Separando as variáveis independentes e dependentes e transformando em array
 
-x = data.iloc[:,0:7].values 
-y = data.iloc[:,-1].values
+x = data.iloc[:,1:9].join(data.iloc[:,10:14]).values
+y = data.iloc[:,9].values
 
-# print (x)
+# print (x.head(10))
 # print('\n\n\n\n\n\n\n\n')
-# print (y)
+# print (y.head(10))
 # print('\n\n\n\n\n\n\n\n')
 
 # Separando os dados em treino e teste
@@ -42,7 +40,7 @@ desision_tree = tree.DecisionTreeClassifier()
 desision_tree = desision_tree.fit(x_train,y_train)
 
 # Plotando a árvore de decisão
-tree.plot_tree(desision_tree, feature_names=data.columns, class_names=['Average', 'High', 'Low'], filled=True) # plotando a arvore de decisão
+tree.plot_tree(desision_tree, feature_names=data.columns, class_names=['Terrível','Péssimo' ,'Muito Ruim', 'Ruim', 'OK', 'Bom', 'Muito Bom', 'Ótimo', 'Excelente', 'GOAT' ], filled=True) # plotando a arvore de decisão
 plt.show()
 
 # Fazendo a predição
