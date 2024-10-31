@@ -1,3 +1,8 @@
+# Código inicial para a criação de uma arvore de decisão 
+# Realizado na aula introdutória ao conteúdo de arvore de decisão
+# Foi utilizado um dataset simples e sintético apenas para demonstração
+# O dataset foi criado manualmente e está disponível no arquivo data.xlsx
+
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn import tree
