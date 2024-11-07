@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
 
-data = pd.read_csv("./student_sleep_patterns.csv")
+data = pd.read_csv("./ObesityDataSet_raw_and_data_sinthetic.csv")
 
 # print(data.head(10))
 # print('\n\n\n\n\n\n\n\n')
@@ -15,14 +15,22 @@ data = pd.read_csv("./student_sleep_patterns.csv")
 lb_encoder = LabelEncoder() 
 
 data['Gender'] = lb_encoder.fit_transform(data['Gender'])
-data['University_Year'] = lb_encoder.fit_transform(data['University_Year'])
+data['CALC'] = lb_encoder.fit_transform(data['CALC'])
+data['FAVC'] = lb_encoder.fit_transform(data['FAVC'])
+data['SCC'] = lb_encoder.fit_transform(data['SCC'])
+data['SMOKE'] = lb_encoder.fit_transform(data['SMOKE'])
+data['family_history_with_overweight'] = lb_encoder.fit_transform(data['family_history_with_overweight'])
+data['CAEC'] = lb_encoder.fit_transform(data['CAEC'])
+data['MTRANS'] = lb_encoder.fit_transform(data['MTRANS'])
+data['NObeyesdad'] = lb_encoder.fit_transform(data['NObeyesdad'])
+
 
 
 
 # Separando as variáveis independentes e dependentes e transformando em array
 
-x = data.iloc[:,1:9].join(data.iloc[:,10:14]).values
-y = data.iloc[:,9].values
+x = data.iloc[:,0:17]
+y = data.iloc[:,-1]
 
 # print (x.head(10))
 # print('\n\n\n\n\n\n\n\n')
@@ -40,7 +48,7 @@ desision_tree = tree.DecisionTreeClassifier()
 desision_tree = desision_tree.fit(x_train,y_train)
 
 # Plotando a árvore de decisão
-tree.plot_tree(desision_tree, feature_names=data.columns, class_names=['Terrível','Péssimo' ,'Muito Ruim', 'Ruim', 'OK', 'Bom', 'Muito Bom', 'Ótimo', 'Excelente', 'GOAT' ], filled=True) # plotando a arvore de decisão
+tree.plot_tree(desision_tree, feature_names=data.columns, class_names=['Insufficient_Weight', 'Normal_Weight','Obesity_Type_I','Obesity_Type_II', 'Obesity_Type_III', 'Overweight_Level_I', 'Overweight_Level_II'], filled=True) # plotando a arvore de decisão
 plt.show()
 
 # Fazendo a predição
